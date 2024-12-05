@@ -1,12 +1,15 @@
 package com.checkr.interviews;
-import java.util.*;
-
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.jupiter.api.Test;
+
+import com.checkr.interviews.refactored.FundingRaisedController;
+import com.checkr.interviews.refactored.exceptions.NoSuchEntryException;
 
 /**
  * Unit test for simple App.
@@ -22,7 +25,7 @@ public class FundingRaisedTest{
         try {
             Map<String, String> options = new HashMap<String, String> ();
             options.put("company_name", "Facebook");
-            assertEquals(FundingRaised.where(options).size(), 7);
+            assertEquals(FundingRaisedController.where(options).size(), 7);
         } catch(IOException e) {
             System.out.print(e.getMessage());
             System.out.print("error");
@@ -34,7 +37,7 @@ public class FundingRaisedTest{
         try {
             Map<String, String> options = new HashMap<String, String> ();
             options.put("city", "Tempe");
-            assertEquals(FundingRaised.where(options).size(), 3);
+            assertEquals(FundingRaisedController.where(options).size(), 3);
         } catch(IOException e) {
             System.out.print(e.getMessage());
             System.out.print("error");
@@ -46,7 +49,7 @@ public class FundingRaisedTest{
         try {
             Map<String, String> options = new HashMap<String, String> ();
             options.put("state", "CA");
-            assertEquals(FundingRaised.where(options).size(), 873);
+            assertEquals(FundingRaisedController.where(options).size(), 873);
         } catch(IOException e) {
             System.out.print(e.getMessage());
             System.out.print("error");
@@ -58,7 +61,7 @@ public class FundingRaisedTest{
         try {
             Map<String, String> options = new HashMap<String, String> ();
             options.put("round", "a");
-            assertEquals(FundingRaised.where(options).size(), 582);
+            assertEquals(FundingRaisedController.where(options).size(), 582);
         } catch(IOException e) {
             System.out.print(e.getMessage());
             System.out.print("error");
@@ -71,7 +74,7 @@ public class FundingRaisedTest{
             Map<String, String> options = new HashMap<String, String> ();
             options.put("round", "a");
             options.put("company_name", "Facebook");
-            assertEquals(FundingRaised.where(options).size(), 1);
+            assertEquals(FundingRaisedController.where(options).size(), 1);
         } catch(IOException e) {
             System.out.print(e.getMessage());
             System.out.print("error");
@@ -83,7 +86,7 @@ public class FundingRaisedTest{
         try {
             Map<String, String> options = new HashMap<String, String> ();
             options.put("company_name", "NotFacebook");
-            assertEquals(FundingRaised.where(options).size(), 0);
+            assertEquals(FundingRaisedController.where(options).size(), 0);
         } catch(IOException e) {
             System.out.print(e.getMessage());
             System.out.print("error");
@@ -95,7 +98,7 @@ public class FundingRaisedTest{
         try {
             Map<String, String> options = new HashMap<String, String> ();
             options.put("company_name", "Facebook");
-            Map<String, String> row = FundingRaised.where(options).get(0);
+            Map<String, String> row = FundingRaisedController.where(options).get(0);
 
             assertEquals(row.get("permalink"), "facebook");
             assertEquals(row.get("company_name"), "Facebook");
@@ -117,7 +120,7 @@ public class FundingRaisedTest{
         try {
             Map<String, String> options = new HashMap<String, String> ();
             options.put("company_name", "Facebook");
-            Map<String, String> row = FundingRaised.findBy(options);
+            Map<String, String> row = FundingRaisedController.findBy(options);
 
             assertEquals(row.get("permalink"), "facebook");
             assertEquals(row.get("company_name"), "Facebook");
@@ -138,11 +141,11 @@ public class FundingRaisedTest{
     }
 
     @Test
-    public void testFindByGivenState() {
+    public void testFindByGivenState() throws IOException, NoSuchEntryException {
         try {
             Map<String, String> options = new HashMap<String, String> ();
             options.put("state", "CA");
-            Map<String, String> row = FundingRaised.findBy(options);
+            Map<String, String> row = FundingRaisedController.findBy(options);
 
             assertEquals(row.get("permalink"), "digg");
             assertEquals(row.get("company_name"), "Digg");
@@ -168,7 +171,7 @@ public class FundingRaisedTest{
             Map<String, String> options = new HashMap<String, String> ();
             options.put("company_name", "Facebook");
             options.put("round", "c");
-            Map<String, String> row = FundingRaised.findBy(options);
+            Map<String, String> row = FundingRaisedController.findBy(options);
 
             assertEquals(row.get("permalink"), "facebook");
             assertEquals(row.get("company_name"), "Facebook");
@@ -194,7 +197,7 @@ public class FundingRaisedTest{
             Map<String, String> options = new HashMap<String, String> ();
             options.put("company_name", "NotFacebook");
             options.put("round", "c");
-            Map<String, String> row = FundingRaised.findBy(options);
+            Map<String, String> row = FundingRaisedController.findBy(options);
             fail("findBy should throw exception");
         } catch(IOException e) {
             System.out.print(e.getMessage());

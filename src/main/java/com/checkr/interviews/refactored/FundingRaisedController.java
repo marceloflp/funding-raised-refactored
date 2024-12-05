@@ -4,25 +4,27 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.checkr.interviews.refactored.exceptions.NoSuchEntryException;
+
 public class FundingRaisedController {
 	
-	private final CSVReaderService csvReaderService;
-    private final FundingFilterService fundingFilterService;
-    private final DataMapperService dataMapperService;
+	private static CSVReaderService csvReaderService;
+    private static FundingFilterService fundingFilterService;
+    private static DataMapperService dataMapperService;
 
-    public FundingRaisedController() {
-        this.csvReaderService = new CSVReaderService();
-        this.fundingFilterService = new FundingFilterService();
-        this.dataMapperService = new DataMapperService();
+    static {
+        csvReaderService = new CSVReaderService();
+        fundingFilterService = new FundingFilterService();
+        dataMapperService = new DataMapperService();
     }
 
-    public List<Map<String, String>> where(Map<String, String> options) throws IOException {
+    public static List<Map<String, String>> where(Map<String, String> options) throws IOException {
         List<String[]> csvData = csvReaderService.readCSV("startup_funding.csv");
         csvData = fundingFilterService.filter(csvData, options);
         return dataMapperService.mapToOutput(csvData);
     }
 
-    public Map<String, String> findBy(Map<String, String> options) throws IOException, NoSuchEntryException {
+    public static Map<String, String> findBy(Map<String, String> options) throws IOException, NoSuchEntryException {
         List<String[]> csvData = csvReaderService.readCSV("startup_funding.csv");
         List<String[]> filteredData = fundingFilterService.filter(csvData, options);
         if (filteredData.isEmpty()) {
@@ -32,5 +34,3 @@ public class FundingRaisedController {
     }
 
 }
-
-class NoSuchEntryException extends Exception {}

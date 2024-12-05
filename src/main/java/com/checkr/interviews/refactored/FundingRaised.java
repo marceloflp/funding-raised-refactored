@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.checkr.interviews.refactored.exceptions.NoSuchEntryException;
+
 public class FundingRaised {
 	
 	public static void main(String[] args) throws NoSuchEntryException {
